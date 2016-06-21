@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = dbHelper.getWritableDatabase();
     }
 
-    /** Add some text about how insertHabit works**/
+    // Inserts values into the table using a ContentValues object
     private void insertHabit(){
 
         // Create a new map of values, where column names are the keys
@@ -42,13 +42,15 @@ public class MainActivity extends AppCompatActivity {
                 values);
     }
 
+    // Reads data from the table using the query method and returns a Cursor object.
+    // The specific columns to return are specified in the projection String array.
     private Cursor readHabit(){
 
-        //Gets the data repository in read mode
+        // Gets the data repository in read mode
         HabitDbHelper dbHelper = new HabitDbHelper(this);
         mDatabase = dbHelper.getReadableDatabase();
 
-        // Define a projection that specifies which columns from the database we want to read from
+        // Defines a projection that specifies which columns from the database we want to read from
         String[] projection = {
                 HabitContract.HabitEntry._ID,
                 HabitContract.HabitEntry.COLUMN_HABIT_NAME,
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         };
 
         Cursor cursor = mDatabase.query(
-                HabitContract.HabitEntry.TABLE_NAME,// The table to query
+                HabitContract.HabitEntry.TABLE_NAME,      // The table to query
                 projection,                               // The columns to return
                 null,                                     // The columns for the WHERE clause
                 null,                                     // The values for the WHERE clause
@@ -70,12 +72,38 @@ public class MainActivity extends AppCompatActivity {
         return cursor;
     }
 
+    // Takes in a rowID and updates specific values in that row.
+   private void updateHabit(int rowId){
+
+       //Gets the data repository in read mode
+       HabitDbHelper dbHelper = new HabitDbHelper(this);
+       mDatabase = dbHelper.getReadableDatabase();
+
+       // New value for one column
+       ContentValues values = new ContentValues();
+       values.put(HabitContract.HabitEntry.COLUMN_HABIT_NAME, "Water succulents");
+
+       // Which row to update, based on the ID
+       String selection = HabitContract.HabitEntry._ID + " LIKE ?";
+       String[] selectionArgs = { String.valueOf(rowId) };
+
+       int count = mDatabase.update(
+               HabitContract.HabitEntry.TABLE_NAME,
+               values,
+               selection,
+               selectionArgs);
+
+   }
+
+    // Deletes all rows of the table
     private void deleteAll(){
 
-        // Issue SQL statement. whereClause and whereArgs set to null in order to delete all rows
+        // Issue SQL statement
+        // whereClause and whereArgs parameters set to null in order to delete all rows
         mDatabase.delete(HabitContract.HabitEntry.TABLE_NAME, null, null);
 
     }
+
 
 
 

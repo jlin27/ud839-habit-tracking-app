@@ -34,6 +34,7 @@ public class HabitDbHelper extends SQLiteOpenHelper {
 
                         + HabitContract.HabitEntry.COLUMN_HABIT_NAME + " TEXT NOT NULL, "
                         + HabitContract.HabitEntry.COLUMN_HABIT_DATE + " TEXT, "
+                        + HabitContract.HabitEntry.COLUMN_HABIT_FREQUENCY + " TEXT, "
                         + HabitContract.HabitEntry.COLUMN_DONE + " TEXT )"
                 ;
 
